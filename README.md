@@ -65,8 +65,7 @@ cat ssec-downloaded.txt
 aws s3api put-bucket-versioning —bucket bucket-encrypt-ssec —versioning-configuration Status=Enabled
 ```
 
-# Setup an intermediary bucket in separate AWS account 
- 
+# Setup an intermediary bucket in separate AWS account with bucket versioning enabled
  
  
 ## Enable receiving replicated objects from a source bucket
@@ -79,4 +78,46 @@ Sign in to the AWS Management Console and open the Amazon S3 console at https://
 * For *Actions*, choose *Receive replicated objects*. 
     Follow the prompts and enter the AWS account ID of the source bucket account and choose *Generate policies*. This will generate an Amazon S3 bucket policy and a KMS key policy.
 * To add this policy to your existing bucket policy, either choose *Apply settings* or choose *Copy* to manually copy the changes.
+ 
+ ## Setup a replication rule on the Source bucket  
+ 
+ # Create an IAM role with an IAM Policy for replication. Replace the source and intermediary bucket below.  
+ 
+ # IAM Policy example below
+ ```json
+ {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "s3:ListBucket",
+                "s3:GetReplicationConfiguration",
+                "s3:GetObjectVersionForReplication",
+                "s3:GetObjectVersionAcl",
+                "s3:GetObjectVersionTagging",
+                "s3:GetObjectVersion",
+                "s3:ObjectOwnerOverrideToBucketOwner"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::bucket-encrypt-ssec",
+                "arn:aws:s3:::bucket-encrypt-ssec*"
+            ]
+        },
+        {
+            "Action": [
+                "s3:ReplicateObject",
+                "s3:ReplicateDelete",
+                "s3:ReplicateTags",
+                "s3:GetObjectVersionTagging",
+                "s3:ObjectOwnerOverrideToBucketOwner"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::intermediarybucket2/*"
+        }
+    ]
+}
+```
+ 
+ ## Setup a Batch replication 
 
