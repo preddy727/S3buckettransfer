@@ -4,7 +4,7 @@ S3 bucket in one AWS account requires a transfer to another AWS account.  This i
 
 Objects encrypted using SSE-c encryption and the bucket owner does not have the keys that end user used to encrypt the object. 
 
-### Steps to create source bucket with an SSE-c object
+### Pre-req - Steps to create source bucket with an SSE-c object to setup Scenario 
 
 ## Create your own bucket
 
@@ -62,5 +62,21 @@ cat ssec-downloaded.txt
 ## Enable bucket versioning
 
 ```bash
-aws s3api put-bucket-versioning —bucket bucket-encrypt-ssec-q2-3823 —versioning-configuration Status=Enabled
+aws s3api put-bucket-versioning —bucket bucket-encrypt-ssec —versioning-configuration Status=Enabled
 ```
+
+### Setup an intermediary bucket in separate AWS account 
+ 
+ 
+ 
+## Enable receiving replicated objects from a source bucket
+
+Sign in to the AWS Management Console and open the Amazon S3 console at https://console.aws.amazon.com/s3/
+
+* In the left navigation pane, choose *Buckets*.
+* In the *Buckets* list, choose the bucket that you want to use as a destination bucket.
+* Choose the *Management* tab, and scroll down to *Replication rules*.
+* For *Actions*, choose *Receive replicated objects*. 
+    Follow the prompts and enter the AWS account ID of the source bucket account and choose *Generate policies*. This will generate an Amazon S3 bucket policy and a KMS key policy.
+* To add this policy to your existing bucket policy, either choose *Apply settings* or choose *Copy* to manually copy the changes.
+
