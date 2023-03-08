@@ -65,7 +65,9 @@ cat ssec-downloaded.txt
 aws s3api put-bucket-versioning —bucket bucket-encrypt-ssec —versioning-configuration Status=Enabled
 ```
 
-# Setup an intermediary bucket in separate AWS account with bucket versioning enabled
+# Setup an intermediary bucket in separate AWS account
+ 
+## Enable bucket versioning enabled
  
  
 ## Enable receiving replicated objects from a source bucket
@@ -79,9 +81,7 @@ Sign in to the AWS Management Console and open the Amazon S3 console at https://
     Follow the prompts and enter the AWS account ID of the source bucket account and choose *Generate policies*. This will generate an Amazon S3 bucket policy and a KMS key policy.
 * To add this policy to your existing bucket policy, either choose *Apply settings* or choose *Copy* to manually copy the changes.
  
- ## Setup a replication rule on the Source bucket  
- 
- # Create an IAM role with an IAM Policy for replication. Replace the source and intermediary bucket below.  
+ ## Create an IAM role with an IAM Policy for replication. Replace the source and intermediary bucket below.  
  
  # IAM Policy example below
  ```json
@@ -118,6 +118,55 @@ Sign in to the AWS Management Console and open the Amazon S3 console at https://
     ]
 }
 ```
+ ## Setup a replication rule on the Source bucket 
  
- ## Setup a Batch replication 
+ 
+ ## Setup a Batch replication policy using the sample below. Replace with source bucket, manifest destination bucket and completion job destination bucket. 
+ ```json
+ 
+ 
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "s3:InitiateReplication"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::bucket-encrypt-ssec-q2-3823/*"
+            ]
+        },
+        {
+            "Action": [
+                "s3:GetReplicationConfiguration",
+                "s3:PutInventoryConfiguration",
+                "s3:GetObjectVersionForReplication"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::bucket-encrypt-ssec"
+            ]
+        },
+        {
+            "Action": [
+                "s3:GetObject",
+                "s3:GetObjectVersion"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::app2container-pr-mar-30/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::app2container-pr-mar-30/*",
+                "arn:aws:s3:::app2container-pr-mar-30/*"
+            ]
+        }
+    ]
+}
 
