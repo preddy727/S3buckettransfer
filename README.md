@@ -65,7 +65,7 @@ cat ssec-downloaded.txt
 aws s3api put-bucket-versioning —bucket bucket-encrypt-ssec —versioning-configuration Status=Enabled
 ```
 
-### Setup an intermediary bucket in separate AWS account 
+# Setup an intermediary bucket in separate AWS account 
  
  
  
