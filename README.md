@@ -169,7 +169,7 @@ Sign in to the AWS Management Console and open the Amazon S3 console at https://
         }
     ]
 }
-
+```
  ## Verify data in intermediary bucket and delete the Source bucket 
  
  ## Recreate the original source bucket name in the new Account 
