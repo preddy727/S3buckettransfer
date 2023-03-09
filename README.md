@@ -170,3 +170,11 @@ Sign in to the AWS Management Console and open the Amazon S3 console at https://
     ]
 }
 
+ ## Verify data in intermediary bucket and delete the Source bucket 
+ 
+ ## Recreate the original source bucket name in the new Account 
+ 
+ ## Setup replication rule and batch job from intermediary bucket to the new bucket (using original name) in new account
+ 
+ ## Run the batch job and verify data 
+
